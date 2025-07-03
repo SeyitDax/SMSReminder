@@ -5,8 +5,9 @@ from flask_apscheduler import APScheduler
 from config import Config
 from database import db
 from routes.health import health_bp
-from routes.reminders import reminder_bp
+from routes.reminders import reminders_bp
 from routes.schedule import schedule_bp
+from routes.ui import ui_bp
 
 class ConfigScheduler:
     JOBS = []
@@ -27,8 +28,9 @@ def create_app():
     scheduler.start()
     
     app.register_blueprint(health_bp)
-    app.register_blueprint(reminder_bp)
+    app.register_blueprint(reminders_bp)
     app.register_blueprint(schedule_bp)
+    app.register_blueprint(ui_bp)
 
     app.scheduler = scheduler
 

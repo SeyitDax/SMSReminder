@@ -64,43 +64,64 @@
       <label for="message">Message:</label>
       <textarea id="message" name="message" rows="4" placeholder="Reminder text here..." required></textarea>
 
-      <label for="send_time">Send Time (ISO format):</label>
-      <input type="text" id="send_time" name="send_time" placeholder="2025-07-01T15:00:00" required />
+      <label for="created_at">Created At (ISO format):</label>
+      <input type="text" id="created_at" name="created_at" placeholder="2025-07-01T15:00:00" required />
 
       <button type="submit">Schedule Reminder</button>
+     <audio id="clickSound" src="{{ url_for('static', filename='clickSound.mp3') }}" preload="auto"></audio>
     </form>
     <div class="status" id="status"></div>
   </div>
 
   <script>
-    const form = document.getElementById('smsForm');
-    const statusDiv = document.getElementById('status');
+  const form = document.getElementById('smsForm');
+  const statusDiv = document.getElementById('status');
+  const clickSound = document.getElementById('clickSound');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const data = {
-        to: form.to.value,
-        message: form.message.value,
-        send_time: form.send_time.value
-      };
+  // Add fade-in effect to status messages
+  statusDiv.style.opacity = 0;
+  statusDiv.style.transition = 'opacity 0.7s';
 
-      try {
-        const res = await fetch('/schedule', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const result = await res.json();
-        statusDiv.textContent = result.message || JSON.stringify(result);
-        statusDiv.style.color = res.ok ? 'green' : 'red';
-      } catch (err) {
-        statusDiv.textContent = 'Error sending request.';
-        statusDiv.style.color = 'red';
-      }
-    });
+    // Play sound
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    const data = {
+      to: form.to.value,
+      message: form.message.value,
+      created_at: form.created_at.value
+    };
+
+    try {
+      const res = await fetch('/schedule', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      statusDiv.textContent = result.message || JSON.stringify(result);
+      statusDiv.style.color = res.ok ? 'green' : 'red';
+    } catch (err) {
+      statusDiv.textContent = 'Error sending request.';
+      statusDiv.style.color = 'red';
+    }
+    // Reset fade
+    statusDiv.style.transition = 'none';
+    statusDiv.style.opacity = 0;
+    void statusDiv.offsetWidth; // force reflow
+
+    // Animate in
+    statusDiv.style.transition = 'opacity 0.7s';
+    setTimeout(() => {
+      statusDiv.style.opacity = 1;
+    }, 0);
+  });
   </script>
 </body>
 </html>

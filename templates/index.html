@@ -69,6 +69,9 @@
 
       <button type="submit">Schedule Reminder</button>
      <audio id="clickSound" src="{{ url_for('static', filename='clickSound.mp3') }}" preload="auto"></audio>
+     <button id="clearPastBtn" style="margin-top: 1rem; background-color: #dc3545;">
+  Clear Past Reminders
+</button>
     </form>
     <div class="status" id="status"></div>
   </div>
@@ -77,7 +80,8 @@
   const form = document.getElementById('smsForm');
   const statusDiv = document.getElementById('status');
   const clickSound = document.getElementById('clickSound');
-
+  const clearBtn = document.getElementById("clearPastBtn");
+  
   // Add fade-in effect to status messages
   statusDiv.style.opacity = 0;
   statusDiv.style.transition = 'opacity 0.7s';
@@ -120,7 +124,29 @@
     statusDiv.style.transition = 'opacity 0.7s';
     setTimeout(() => {
       statusDiv.style.opacity = 1;
-    }, 0);
+    }, 0);});
+
+  clearBtn.addEventListener("click", async () => {
+    const confirmed = confirm("Are you sure you want to delete past reminders?");
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch("/api/reminders/past", {
+        method: "DELETE"
+      });
+
+      const result = await res.json();
+      statusDiv.textContent = result.message || "Reminders cleared.";
+      statusDiv.style.color = res.ok ? "green" : "red";
+      statusDiv.style.opacity = 0;
+      void statusDiv.offsetWidth;
+      setTimeout(() => {
+        statusDiv.style.opacity = 1;
+      }, 50);
+    } catch (err) {
+      statusDiv.textContent = "Error clearing reminders.";
+      statusDiv.style.color = "red";
+    }
   });
   </script>
 </body>

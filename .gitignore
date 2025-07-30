@@ -1,5 +1,34 @@
-.env
-venv/
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Environment variables
+.env
+
+# Database files
+*.db
+instance/sms_scheduler.db
+
+# Flask/instance folder (if you want to ignore all instance data)
+# instance/
+
+# Static/media files
 *.mp3
+static/*.mp3
 clickSound.mp3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Migrations cache
+migrations/*.pyc
+migrations/__pycache__/

@@ -25,7 +25,7 @@ A Flask-based SMS Scheduler Bot that allows you to schedule SMS reminders via a 
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/SeyitDax/SMSReminder
    cd SMS_Reminder
    ```
 
@@ -182,7 +182,7 @@ Pull requests are welcome! For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](LICENSE) (or specify your license here)
+[MIT](LICENSE)
 
 ---
 

@@ -32,3 +32,5 @@ Thumbs.db
 # Migrations cache
 migrations/*.pyc
 migrations/__pycache__/
+
+refrences/

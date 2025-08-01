@@ -44,7 +44,8 @@ def create_app():
         func=clear_old_reminders_job,
         trigger="interval",
         days=2,
-        next_run_time=datetime.utcnow()  # start immediately
+        next_run_time=datetime.utcnow(),  # start immediately
+        args=[app]
     )
 
     return app

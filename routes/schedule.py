@@ -25,9 +25,9 @@ def send_sms(app, reminder_id):
             body=reminder.message
         )
 
-def clear_old_reminders_job():
-    with current_app.app_context():
-        delete_past_reminders()
+def clear_old_reminders_job(app):
+    with app.app_context():
+        delete_past_reminders(app)
 
 @schedule_bp.route("/schedule", methods=["POST"])
 def schedule_sms():

@@ -85,5 +85,5 @@ def get_reminder(reminder_id):
 @api_bp.route("/api/reminders/past", methods=["DELETE"])
 def delete_past_reminders_api():
     """Delete all past reminders."""
-    num_deleted = delete_past_reminders()
+    num_deleted = delete_past_reminders(current_app._get_current_object())
     return jsonify({"message": f"{num_deleted} past reminders deleted."})

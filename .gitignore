@@ -33,4 +33,6 @@ Thumbs.db
 migrations/*.pyc
 migrations/__pycache__/
 
-refrences/.
+references/*
+
+

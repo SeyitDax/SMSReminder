@@ -25,6 +25,20 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
+    
+    # Initialize database tables on startup
+    with app.app_context():
+        try:
+            # Try to run any pending migrations
+            from flask_migrate import upgrade
+            upgrade()
+            print("✅ Database migrations completed successfully")
+        except Exception as e:
+            print(f"⚠️ Migration error: {e}")
+            print("🔧 Creating tables manually...")
+            # If migrations fail, create tables manually
+            db.create_all()
+            print("✅ Database tables created successfully")
 
     # Initialize the APScheduler
     scheduler = APScheduler()
